@@ -46,3 +46,84 @@ const quiz = [
     ]
   }
 ];
+let scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
+let currentQuestion = 0;
+
+// DOM Elements
+const questionText = document.getElementById("question-text");
+const answerButtons = document.getElementById("answer-buttons");
+const showResultBtn = document.getElementById("show-result");
+const resultContainer = document.getElementById("result-container");
+const resultText = document.getElementById("result-text");
+
+
+function loadQuestion() {
+  const q = quiz[currentQuestion];
+  questionText.textContent = q.question;
+  answerButtons.innerHTML = ""; 
+
+  q.answers.forEach((answer) => {
+    const btn = document.createElement("button");
+    btn.textContent = answer.text;
+    btn.className = "btn btn-outline-primary w-100 mb-2";
+    btn.addEventListener("click", () => selectAnswer(answer.city));
+    answerButtons.appendChild(btn);
+  });
+}
+
+function selectAnswer(city) {
+  scores[city]++;
+
+  currentQuestion++;
+
+  if (currentQuestion < quiz.length) {
+    loadQuestion();
+  } else {
+    questionText.textContent = "All done!";
+    answerButtons.innerHTML = "";
+    showResultBtn.style.display = "block";
+  }
+}
+
+showResultBtn.addEventListener("click", () => {
+  showResult();
+});
+
+function showResult() {
+  
+  document.getElementById("quiz-container").style.display = "none";
+  showResultBtn.style.display = "none";
+  resultContainer.style.display = "block";
+
+
+  const topCity = Object.keys(scores).reduce((a, b) =>
+    scores[a] > scores[b] ? a : b
+  );
+
+  let cityName = "";
+  let description = "";
+
+  switch (parseInt(topCity)) {
+    case 1:
+      cityName = "New York City ";
+      description = "You thrive in a fast-paced, ambitious environment full of opportunity and excitement!";
+      break;
+    case 2:
+      cityName = "Los Angeles ";
+      description = "You’re laid-back, creative, and love sunshine — the perfect fit for LA’s easy coastal vibe!";
+      break;
+    case 3:
+      cityName = "Denver ";
+      description = "You value balance, nature, and outdoor adventures — Denver’s your kind of town!";
+      break;
+    case 4:
+      cityName = "San Francisco ";
+      description = "You’re innovative, thoughtful, and appreciate culture and creativity — San Francisco fits you perfectly!";
+      break;
+  }
+
+  resultText.innerHTML = `<strong>${cityName}</strong><br>${description}`;
+}
+
+
+loadQuestion();
