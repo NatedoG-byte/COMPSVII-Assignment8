@@ -1,6 +1,13 @@
-.selected {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
+body {
+    font-family: 'Arial', sans-serif;
+
 }
-  
+
+.btn-answer {
+    width: 100%
+    margin-bottom: 10px;
+}
+#result h2 {
+    font-weight: bold;
+    margin-top: 20px;
+}
